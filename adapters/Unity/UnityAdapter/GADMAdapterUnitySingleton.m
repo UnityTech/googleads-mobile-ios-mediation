@@ -93,15 +93,14 @@ bool _bannerRequested = false;
   }
 
   [self addAdapterDelegate:adapterDelegate];
+  
+  UADSMetaData* metaData = [[UADSMetaData alloc]init];
+  metaData.category = @"load";
+  [metaData setValue:@"placementID" forKey:@"load_placement"];
+  [metaData commit];
 
-  if ([UnityAds isInitialized]) {
-    if ([UnityAds isReady:placementID]) {
+  if ([UnityAds isInitialized] && [UnityAds isReady:placementID]) {
       [adapterDelegate unityAdsReady:placementID];
-    } else {
-      NSString *description = [[NSString alloc]
-          initWithFormat:@"%@ failed to receive rewarded ad.", NSStringFromClass([UnityAds class])];
-      [adapterDelegate unityAdsDidError:kUnityAdsErrorShowError withMessage:description];
-    }
   }
 }
 
@@ -216,8 +215,17 @@ bool _bannerRequested = false;
 - (void)unityAdsPlacementStateChanged:(NSString *)placementId
                              oldState:(UnityAdsPlacementState)oldState
                              newState:(UnityAdsPlacementState)newState {
-  // The unityAdsReady: and unityAdsDidError: callback methods are used to forward Unity Ads SDK
-  // states to the adapters. No need to forward this callback to the adapters.
+  if (oldState == kUnityAdsPlacementStateWaiting && newState == kUnityAdsPlacementStateReady){
+    id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate> adapterDelegate;
+    
+    @synchronized (_adapterDelegates) {
+      adapterDelegate = [_adapterDelegates objectForKey:placementId];
+    }
+    
+    if (adapterDelegate) {
+      [adapterDelegate unityAdsReady:placementId];
+    }
+  }
 }
 
 - (void)unityAdsDidFinish:(NSString *)placementID withFinishState:(UnityAdsFinishState)state {
@@ -233,14 +241,7 @@ bool _bannerRequested = false;
 }
 
 - (void)unityAdsReady:(NSString *)placementID {
-  id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate> adapterDelegate;
-  @synchronized (_adapterDelegates) {
-    adapterDelegate = [_adapterDelegates objectForKey:placementID];
-  }
-
-  if (adapterDelegate) {
-    [adapterDelegate unityAdsReady:placementID];
-  }
+  
 }
 
 - (void)unityAdsDidClick:(NSString *)placementID {
