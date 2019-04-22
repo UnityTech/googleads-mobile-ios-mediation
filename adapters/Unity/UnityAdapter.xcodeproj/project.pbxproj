@@ -36,7 +36,6 @@
 		7DA7826A1DDA681E000C088E /* GADMAdapterUnity.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DA7825E1DDA681E000C088E /* GADMAdapterUnity.h */; };
 		7DA7826B1DDA681E000C088E /* GADMAdapterUnity.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA7825F1DDA681E000C088E /* GADMAdapterUnity.m */; };
 		7DA7826C1DDA681E000C088E /* GADMAdapterUnityConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DA782601DDA681E000C088E /* GADMAdapterUnityConstants.h */; };
-		7DA7826D1DDA681E000C088E /* GADMAdapterUnityProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DA782611DDA681E000C088E /* GADMAdapterUnityProtocol.h */; };
 		7DA7826E1DDA681E000C088E /* GADMAdapterUnitySingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DA782621DDA681E000C088E /* GADMAdapterUnitySingleton.h */; };
 		7DA7826F1DDA681E000C088E /* GADMAdapterUnitySingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA782631DDA681E000C088E /* GADMAdapterUnitySingleton.m */; };
 		7DA782701DDA681E000C088E /* GADMAdapterUnityWeakReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DA782641DDA681E000C088E /* GADMAdapterUnityWeakReference.h */; };
@@ -70,7 +69,6 @@
 		7DA7825E1DDA681E000C088E /* GADMAdapterUnity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdapterUnity.h; sourceTree = "<group>"; };
 		7DA7825F1DDA681E000C088E /* GADMAdapterUnity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GADMAdapterUnity.m; sourceTree = "<group>"; };
 		7DA782601DDA681E000C088E /* GADMAdapterUnityConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdapterUnityConstants.h; sourceTree = "<group>"; };
-		7DA782611DDA681E000C088E /* GADMAdapterUnityProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdapterUnityProtocol.h; sourceTree = "<group>"; };
 		7DA782621DDA681E000C088E /* GADMAdapterUnitySingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdapterUnitySingleton.h; sourceTree = "<group>"; };
 		7DA782631DDA681E000C088E /* GADMAdapterUnitySingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GADMAdapterUnitySingleton.m; sourceTree = "<group>"; };
 		7DA782641DDA681E000C088E /* GADMAdapterUnityWeakReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADMAdapterUnityWeakReference.h; sourceTree = "<group>"; };
@@ -125,7 +123,6 @@
 				7DA7825E1DDA681E000C088E /* GADMAdapterUnity.h */,
 				7DA7825F1DDA681E000C088E /* GADMAdapterUnity.m */,
 				7DA782601DDA681E000C088E /* GADMAdapterUnityConstants.h */,
-				7DA782611DDA681E000C088E /* GADMAdapterUnityProtocol.h */,
 				7DA782621DDA681E000C088E /* GADMAdapterUnitySingleton.h */,
 				7DA782631DDA681E000C088E /* GADMAdapterUnitySingleton.m */,
 				7DA782641DDA681E000C088E /* GADMAdapterUnityWeakReference.h */,
@@ -177,7 +174,6 @@
 				7DA782681DDA681E000C088E /* UnityAdapter.h in Headers */,
 				7DA782701DDA681E000C088E /* GADMAdapterUnityWeakReference.h in Headers */,
 				7DA7826E1DDA681E000C088E /* GADMAdapterUnitySingleton.h in Headers */,
-				7DA7826D1DDA681E000C088E /* GADMAdapterUnityProtocol.h in Headers */,
 				7DA7826C1DDA681E000C088E /* GADMAdapterUnityConstants.h in Headers */,
 				7DA782721DDA681E000C088E /* GADUnityError.h in Headers */,
 				7DA7826A1DDA681E000C088E /* GADMAdapterUnity.h in Headers */,

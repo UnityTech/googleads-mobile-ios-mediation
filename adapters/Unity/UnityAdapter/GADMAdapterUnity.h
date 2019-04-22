@@ -16,11 +16,8 @@
 @import GoogleMobileAds;
 @import UnityAds;
 
-#import "GADMAdapterUnityProtocol.h"
-
 /// Adapter for communicating with the Unity Ads Network to fetch reward-based video ads and
 /// interstitial ads.
-@interface GADMAdapterUnity : NSObject <GADMRewardBasedVideoAdNetworkAdapter, GADMAdNetworkAdapter,
-                                        GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate, UnityAdsBannerDelegate>
+@interface GADMAdapterUnity : NSObject <GADMRewardBasedVideoAdNetworkAdapter, GADMAdNetworkAdapter>
 
 @end

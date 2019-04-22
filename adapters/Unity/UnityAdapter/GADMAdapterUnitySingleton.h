@@ -16,48 +16,13 @@
 @import GoogleMobileAds;
 @import UnityAds;
 
-#import "GADMAdapterUnityProtocol.h"
-
 @interface GADMAdapterUnitySingleton : NSObject
 
 /// Shared instance.
 + (instancetype)sharedInstance;
 
-/// Configures a reward-based video ad with provided |gameID| and |adapterDelegate| and returns
+/// Configures a reward-based video ad with provided |gameID| and returns
 /// YES if successful; otherwise returns NO.
-- (BOOL)configureRewardBasedVideoAdWithGameID:(NSString *)gameID
-                                     delegate:
-                                        (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
-                                            adapterDelegate;
-
-/// Requests a reward-based video ad with |adapterDelegate|.
-- (void)requestRewardBasedVideoAdWithDelegate:
-        (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)adapterDelegate;
-
-/// Presents a reward-based video ad for |viewController| with |adapterDelegate|.
-- (void)presentRewardBasedVideoAdForViewController:(UIViewController *)viewController
-                                          delegate:
-                                        (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
-                                            adapterDelegate;
-
-/// Configures an interstitial ad with provided |gameID| and |adapterDelegate|.
-- (void)configureInterstitialAdWithGameID:(NSString *)gameID
-                                 delegate:
-                                        (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
-                                            adapterDelegate;
-
-/// Presents an interstitial ad for |viewController| with |adapterDelegate|.
-- (void)presentInterstitialAdForViewController:(UIViewController *)viewController
-                                      delegate:
-                                        (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
-                                            adapterDelegate;
-
-/// Presents a banner ad for |gameID| with |adapterDelegate|
-- (void)presentBannerAd:(NSString *)gameID
-               delegate: (id<GADMAdapterUnityDataProvider, UnityAdsBannerDelegate>) adapterDelegate;
-
-/// Tells the adapter to remove itself as a |adapterDelegate|.
-- (void)stopTrackingDelegate:(id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
-                                 adapterDelegate;
+- (BOOL)configureWithGameID:(NSString *)gameID;
 
 @end
