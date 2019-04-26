@@ -32,8 +32,8 @@
     if ([UnityAds isSupported]) {
       if (![UnityAds isInitialized]) {
         [UnityAds initialize:gameID];
-        return YES;
       }
+      return YES;
     }
     return NO;
 }

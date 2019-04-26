@@ -127,12 +127,19 @@
     [strongConnector adapter:self didFailAd:error];
     return;
   }
-  [[GADMAdapterUnitySingleton sharedInstance] configureWithGameID:gameID];
-
-  if (!_interstitialAd) {
-    _interstitialAd = [[UADSInterstitialAd alloc] initWithPlacementId:_placementID];
-    _interstitialAd.delegate = self;
-    [_interstitialAd load];
+  BOOL isConfigured = [[GADMAdapterUnitySingleton sharedInstance] configureWithGameID:gameID];
+  if (!isConfigured) {
+    NSString *description =
+    [[NSString alloc] initWithFormat:@"%@ is not supported for this device.",
+                                     NSStringFromClass([UnityAds class])];
+    NSError *error = GADUnityErrorWithDescription(description);
+    [strongConnector adapter:self didFailAd:error];
+    } else {
+        if (!_interstitialAd) {
+            _interstitialAd = [[UADSInterstitialAd alloc] initWithPlacementId:_placementID];
+            _interstitialAd.delegate = self;
+            [_interstitialAd load];
+        }
   }
 }
 
@@ -156,12 +163,19 @@
     [strongNetworkConnector adapter:self didFailAd:error];
     return;
   }
-  [[GADMAdapterUnitySingleton sharedInstance] configureWithGameID:gameID];
-
-  if (!_bannerAd) {
-    _bannerAd = [[UADSBannerAd alloc] initWithPlacementId:_placementID];
-    _bannerAd.delegate = self;
-    [_bannerAd load];
+  BOOL isConfigured = [[GADMAdapterUnitySingleton sharedInstance] configureWithGameID:gameID];
+  if (!isConfigured) {
+    NSString *description =
+    [[NSString alloc] initWithFormat:@"%@ is not supported for this device.",
+    NSStringFromClass([UnityAds class])];
+    NSError *error = GADUnityErrorWithDescription(description);
+    [strongNetworkConnector adapter:self didFailAd:error];
+  } else {
+    if (!_bannerAd) {
+        _bannerAd = [[UADSBannerAd alloc] initWithPlacementId:_placementID];
+        _bannerAd.delegate = self;
+        [_bannerAd load];
+    }
   }
 }
 
