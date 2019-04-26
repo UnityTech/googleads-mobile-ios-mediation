@@ -56,7 +56,9 @@ bool _bannerRequested = false;
   UADSMediationMetaData *mediationMetaData = [[UADSMediationMetaData alloc] init];
   [mediationMetaData setName:kGADMAdapterUnityMediationNetworkName];
   [mediationMetaData setVersion:kGADMAdapterUnityVersion];
+  [mediationMetaData setRaw:@"disable_auto_caching" value:@"true"];
   [mediationMetaData commit];
+  
   // Initializing Unity Ads with |gameID|.
   [UnityAds initialize:gameID delegate:self];
 }
@@ -82,6 +84,13 @@ bool _bannerRequested = false;
     (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)adapterDelegate {
   NSString *placementID = [adapterDelegate getPlacementID];
 
+  //Call metadata load API
+  NSString *uniqueEventId = [[NSUUID UUID] UUIDString];
+  UADSMetaData *metaData = [[UADSMetaData alloc] init];
+  [metaData setCategory:@"load"];
+  [metaData setRaw:uniqueEventId value:placementID];
+  [metaData commit];
+  
   @synchronized (_adapterDelegates) {
     if ([_adapterDelegates objectForKey:placementID]) {
       NSString *message = @"An ad is already loading for placement ID %@";
@@ -91,18 +100,8 @@ bool _bannerRequested = false;
       return;
     }
   }
-
+  
   [self addAdapterDelegate:adapterDelegate];
-
-  if ([UnityAds isInitialized]) {
-    if ([UnityAds isReady:placementID]) {
-      [adapterDelegate unityAdsReady:placementID];
-    } else {
-      NSString *description = [[NSString alloc]
-          initWithFormat:@"%@ failed to receive rewarded ad.", NSStringFromClass([UnityAds class])];
-      [adapterDelegate unityAdsDidError:kUnityAdsErrorShowError withMessage:description];
-    }
-  }
 }
 
 - (void)presentRewardedAdForViewController:(UIViewController *)viewController
@@ -119,29 +118,35 @@ bool _bannerRequested = false;
 
 - (void)configureInterstitialAdWithGameID:(NSString *)gameID
                                  delegate:
-                                     (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
+                                      (id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate>)
                                          adapterDelegate {
-  if ([UnityAds isSupported]) {
-    if ([UnityAds isInitialized]) {
-      NSString *placementID = [adapterDelegate getPlacementID];
-      if ([UnityAds isReady:placementID]) {
-        [adapterDelegate unityAdsReady:placementID];
-      } else {
-        NSString *description =
-            [[NSString alloc] initWithFormat:@"%@ failed to receive interstitial ad.",
-                                             NSStringFromClass([UnityAds class])];
-        [adapterDelegate unityAdsDidError:kUnityAdsErrorShowError withMessage:description];
-      }
-    } else {
-      // Add delegate reference in adapterDelegate list only if Unity Ads is not initialized.
-      [self addAdapterDelegate:adapterDelegate];
-      [self initializeWithGameID:gameID];
+  
+  NSString *placementID = [adapterDelegate getPlacementID];
+  
+  NSString *uniqueEventId = [[NSUUID UUID] UUIDString];
+  UADSMetaData *metaData = [[UADSMetaData alloc] init];
+  [metaData setCategory:@"load"];
+  [metaData setRaw:uniqueEventId value:placementID];
+  [metaData commit];
+  
+  @synchronized (_adapterDelegates) {
+    if ([_adapterDelegates objectForKey:placementID]) {
+      NSString *message = @"An ad is already loading for placement ID %@";
+      [adapterDelegate
+       unityAdsDidError:kUnityAdsErrorInternalError
+       withMessage:[NSString stringWithFormat:message, placementID]];
+      return;
+    }
+  }
+  
+  [self addAdapterDelegate:adapterDelegate];
+
+  if ([UnityAds isInitialized]) {
+    if ([UnityAds isReady:placementID]) {
+      [adapterDelegate unityAdsReady:placementID];
     }
   } else {
-    NSString *description =
-        [[NSString alloc] initWithFormat:@"%@ is not supported for this device.",
-                                         NSStringFromClass([UnityAds class])];
-    [adapterDelegate unityAdsDidError:kUnityAdsErrorNotInitialized withMessage:description];
+    [self initializeWithGameID:gameID];
   }
 }
 
@@ -217,7 +222,29 @@ bool _bannerRequested = false;
                              oldState:(UnityAdsPlacementState)oldState
                              newState:(UnityAdsPlacementState)newState {
   // The unityAdsReady: and unityAdsDidError: callback methods are used to forward Unity Ads SDK
-  // states to the adapters. No need to forward this callback to the adapters.
+  
+  // No fill
+  if (newState == kUnityAdsPlacementStateNoFill){
+    id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate> adapterDelegate;
+    @synchronized (_adapterDelegates) {
+      adapterDelegate = [_adapterDelegates objectForKey:placementId];
+    }
+    
+    if (adapterDelegate) {
+      [adapterDelegate unityAdsDidError:kUnityAdsErrorInternalError withMessage:@"Placement has no fill"];
+    }
+    
+    NSString *description = [[NSString alloc] initWithFormat:@"%@ failed to receive rewarded ad - No fill", NSStringFromClass([UnityAds class])];
+    [adapterDelegate unityAdsDidError:kUnityAdsErrorShowError withMessage:description];
+  }else if(newState == kUnityAdsPlacementStateReady){
+    id<GADMAdapterUnityDataProvider, UnityAdsExtendedDelegate> adapterDelegate;
+    @synchronized (_adapterDelegates) {
+      adapterDelegate = [_adapterDelegates objectForKey:placementId];
+    }
+    if (adapterDelegate) {
+      [adapterDelegate unityAdsReady:placementId];
+    }
+  }
 }
 
 - (void)unityAdsDidFinish:(NSString *)placementID withFinishState:(UnityAdsFinishState)state {
