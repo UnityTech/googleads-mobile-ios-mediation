@@ -143,6 +143,9 @@
     }
 }
 
+- (void)stopBeingDelegate {
+}
+
 #pragma mark Banner Methods
 
 - (void)getBannerWithSize:(GADAdSize)adSize {
