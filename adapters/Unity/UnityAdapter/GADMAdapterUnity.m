@@ -84,12 +84,7 @@
 }
 
 - (void)requestRewardBasedVideoAd {
-  if (_rewardedVideoAd) {
-    if ([_rewardedVideoAd canShow]) {
-      id<GADMRewardBasedVideoAdNetworkConnector> strongRewardedConnector = _rewardBasedVideoAdConnector;
-      [strongRewardedConnector adapterDidReceiveRewardBasedVideoAd:self];
-    }
-  } else {
+  if (_rewardedVideoAd == nil) {
     _rewardedVideoAd = [[UADSRewardedVideoAd alloc] initWithPlacementId:_placementID];
     _rewardedVideoAd.delegate = self;
     [_rewardedVideoAd load];
@@ -204,8 +199,8 @@
 
 -(void)interstitialAdDidClose:(UADSInterstitialAd *)interstitialAd finishState:(UnityAdsFinishState)finishState {
   [_networkConnector adapterWillDismissInterstitial:self];
-  [_networkConnector adapterDidDismissInterstitial:self];
   _interstitialAd = nil;
+  [_networkConnector adapterDidDismissInterstitial:self];
 }
 
 #pragma mark - UADSRewardedVideoAdDelegate
@@ -235,6 +230,7 @@
 }
 -(void)rewardedVideoAdDidClose:(UADSRewardedVideoAd *)rewardedVideoAd finishState:(UnityAdsFinishState)finishState {
   [_rewardBasedVideoAdConnector adapterDidCloseRewardBasedVideoAd:self];
+  _rewardedVideoAd = nil;
 }
 -(void)rewardedVideoAdDidInvalidate:(UADSRewardedVideoAd *)rewardedVideoAd {
 
