@@ -97,9 +97,7 @@
 }
 
 - (void)presentRewardBasedVideoAdWithRootViewController:(UIViewController *)viewController {
-  if ([_rewardedVideoAd canShow]) {
-    [_rewardedVideoAd showFromViewController:viewController];
-  }
+  [_rewardedVideoAd showFromViewController:viewController];
 }
 
 #pragma mark Interstitial Methods
@@ -137,10 +135,8 @@
 }
 
 - (void)presentInterstitialFromRootViewController:(UIViewController *)rootViewController {
-    if ([_interstitialAd canShow]) {
-      [_networkConnector adapterWillPresentInterstitial:self];
-      [_interstitialAd showFromViewController:rootViewController];
-    }
+    [_networkConnector adapterWillPresentInterstitial:self];
+    [_interstitialAd showFromViewController:rootViewController];
 }
 
 - (void)stopBeingDelegate {
